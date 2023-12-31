@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strconv"
 
-	oc "github.com/haideralsh/options-lab/lib"
+	oc "github.com/haideralsh/options-lab/api-helpers"
 )
 
 type OptionChain struct {
@@ -49,7 +49,7 @@ func find(symbols []string, percentage float64) ([]byte, error) {
 
 	quotes := make(map[string]<-chan float64)
 	options := make(map[string][]<-chan []interface{})
-	optimal := make(map[string][]OptionChain)
+	optimal := make(map[string][]interface{})
 	expirations := make(map[string]<-chan []interface{})
 
 	for _, s := range symbols {
@@ -118,11 +118,10 @@ func getOptions(symbol, expiration string) <-chan []interface{} {
 	return r
 }
 
-func findOptimalOptions(options []interface{}, price, target, percentage float64) []OptionChain {
-	var optionChains []OptionChain
+func findOptimalOptions(options []interface{}, price, target, percentage float64) []interface{} {
+	var optionChains []interface{}
 
 	for _, o := range options {
-		expiration := fmt.Sprintf("%v", o.(map[string]interface{})["expiration_date"])
 		otype := fmt.Sprintf("%v", o.(map[string]interface{})["option_type"])
 		strike, err := strconv.ParseFloat(fmt.Sprintf("%v", o.(map[string]interface{})["strike"]), 64)
 		bid, err := strconv.ParseFloat(fmt.Sprintf("%v", o.(map[string]interface{})["bid"]), 64)
@@ -132,12 +131,15 @@ func findOptimalOptions(options []interface{}, price, target, percentage float64
 		}
 
 		if otype == "call" && strike >= target && bid/price >= percentage {
-			optionChains = append(optionChains, OptionChain{
-				Percentage: (bid / price) * 100,
-				Strike:     strike,
-				Bid:        bid,
-				Expiration: expiration,
-			})
+			newOption := map[string]interface{}{
+				"Percentage": (bid / price) * 100,
+			}
+
+			for key, value := range o.(map[string]interface{}) {
+				newOption[key] = value
+			}
+
+			optionChains = append(optionChains, newOption)
 		}
 	}
 

@@ -1,4 +1,4 @@
-package lib
+package api_helpers
 
 import (
 	"fmt"
