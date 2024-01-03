@@ -132,7 +132,7 @@ func findOptimalOptions(options []interface{}, price, target, percentage float64
 
 		if otype == "call" && strike >= target && bid/price >= percentage {
 			newOption := map[string]interface{}{
-				"Percentage": (bid / price) * 100,
+				"percentage": (bid / price) * 100,
 			}
 
 			for key, value := range o.(map[string]interface{}) {
