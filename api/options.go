@@ -31,7 +31,7 @@ func Chains(w http.ResponseWriter, r *http.Request) {
 	symbols := parsedRequest.Symbols
 	percentage := parsedRequest.Percentage / 100.00
 
-	res, err := find(symbols, percentage)
+	res, err := Find(symbols, percentage)
 
 	if err != nil {
 		log.Print(err)
@@ -44,7 +44,7 @@ func Chains(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 }
 
-func find(symbols []string, percentage float64) ([]byte, error) {
+func Find(symbols []string, percentage float64) ([]byte, error) {
 	coefficient := 1.00 + percentage
 
 	quotes := make(map[string]<-chan float64)
@@ -68,9 +68,9 @@ func find(symbols []string, percentage float64) ([]byte, error) {
 
 		target := q * coefficient
 		for _, o := range options[s] {
-			opt := findOptimalOptions(<-o, q, target, percentage)
-			if len(opt) > 0 {
-				optimal[s] = append(optimal[s], opt...)
+			optimalPerExpirationDate := findOptimalOptions(<-o, q, target, percentage)
+			if len(optimalPerExpirationDate) > 0 {
+				optimal[s] = append(optimal[s], optimalPerExpirationDate)
 			}
 		}
 	}
@@ -118,11 +118,13 @@ func getOptions(symbol, expiration string) <-chan []interface{} {
 	return r
 }
 
-func findOptimalOptions(options []interface{}, price, target, percentage float64) []interface{} {
+func findOptimalOptions(options []interface{}, price, target, percentage float64) map[string][]interface{} {
 	var optionChains []interface{}
+	optimalExpirations := make(map[string][]interface{})
 
 	for _, o := range options {
 		otype := fmt.Sprintf("%v", o.(map[string]interface{})["option_type"])
+		expiration := fmt.Sprintf("%v", o.(map[string]interface{})["expiration_date"])
 		strike, err := strconv.ParseFloat(fmt.Sprintf("%v", o.(map[string]interface{})["strike"]), 64)
 		bid, err := strconv.ParseFloat(fmt.Sprintf("%v", o.(map[string]interface{})["bid"]), 64)
 
@@ -140,10 +142,11 @@ func findOptimalOptions(options []interface{}, price, target, percentage float64
 			}
 
 			optionChains = append(optionChains, newOption)
+			optimalExpirations[expiration] = append(optimalExpirations[expiration], optionChains)
 		}
 	}
 
-	return optionChains
+	return optimalExpirations
 }
 
 func getQuote(symbol string) <-chan float64 {
