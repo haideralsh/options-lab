@@ -31,7 +31,7 @@ func Chains(w http.ResponseWriter, r *http.Request) {
 	symbols := parsedRequest.Symbols
 	percentage := parsedRequest.Percentage / 100.00
 
-	res, err := Find(symbols, percentage)
+	res, err := find(symbols, percentage)
 
 	if err != nil {
 		log.Print(err)
@@ -44,12 +44,12 @@ func Chains(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 }
 
-func Find(symbols []string, percentage float64) ([]byte, error) {
+func find(symbols []string, percentage float64) ([]byte, error) {
 	coefficient := 1.00 + percentage
 
 	quotes := make(map[string]<-chan float64)
 	options := make(map[string][]<-chan []interface{})
-	optimal := make(map[string][]interface{})
+	optimal := make(map[string]map[string][]interface{})
 	expirations := make(map[string]<-chan []interface{})
 
 	for _, s := range symbols {
@@ -69,8 +69,17 @@ func Find(symbols []string, percentage float64) ([]byte, error) {
 		target := q * coefficient
 		for _, o := range options[s] {
 			optimalPerExpirationDate := findOptimalOptions(<-o, q, target, percentage)
+
 			if len(optimalPerExpirationDate) > 0 {
-				optimal[s] = append(optimal[s], optimalPerExpirationDate)
+				_, created := optimal[s]
+
+				if (!created) {
+					optimal[s] = make(map[string][]interface{})
+				}
+
+				for expiration, ops := range(optimalPerExpirationDate) {
+					optimal[s][expiration] = append(optimal[s][expiration], ops...)
+				}
 			}
 		}
 	}
@@ -119,7 +128,6 @@ func getOptions(symbol, expiration string) <-chan []interface{} {
 }
 
 func findOptimalOptions(options []interface{}, price, target, percentage float64) map[string][]interface{} {
-	var optionChains []interface{}
 	optimalExpirations := make(map[string][]interface{})
 
 	for _, o := range options {
@@ -129,20 +137,21 @@ func findOptimalOptions(options []interface{}, price, target, percentage float64
 		bid, err := strconv.ParseFloat(fmt.Sprintf("%v", o.(map[string]interface{})["bid"]), 64)
 
 		if err != nil {
-			log.Fatal(err)
+			// Sometimes the strike or bid are returned as null from the API, so we don't process that chain
+			// and move to the next one.'
+			continue
 		}
 
 		if otype == "call" && strike >= target && bid/price >= percentage {
-			newOption := map[string]interface{}{
+			optimalOptionChain := map[string]interface{}{
 				"percentage": (bid / price) * 100,
 			}
 
 			for key, value := range o.(map[string]interface{}) {
-				newOption[key] = value
+				optimalOptionChain[key] = value
 			}
 
-			optionChains = append(optionChains, newOption)
-			optimalExpirations[expiration] = append(optimalExpirations[expiration], optionChains)
+			optimalExpirations[expiration] = append(optimalExpirations[expiration], optimalOptionChain)
 		}
 	}
 
