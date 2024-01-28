@@ -21,7 +21,7 @@ type OptionChain struct {
 type RequestBody struct {
 	Symbols           []oc.Symbol `json:"symbols"`
 	Percentage        float64     `json:"percentage"`
-	ExpiresWithinDays int         `json:"expires_witin_days"`
+	ExpiresWithinDays int         `json:"expires_within_days"`
 }
 
 func Chains(w http.ResponseWriter, r *http.Request) {

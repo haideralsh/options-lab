@@ -42,8 +42,6 @@ export const action: ActionFunction = async ({ request }) => {
     percentage: 4,
   };
 
-  console.log(JSON.stringify(requestBody));
-
   let result;
 
   await fetch("https://options-lab.vercel.app/api/options", {
