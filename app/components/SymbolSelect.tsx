@@ -1,12 +1,13 @@
 import { Combobox } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const defaultSymbols = ["TSLA", "UA", "NOK", "AAPL", "NVDA"];
 
 export default function SymbolSelect() {
-  const [selectedSymbols, setSelectedSymbols] = useState<typeof defaultSymbols>(["TSLA", "UA"]);
+  const [selectedSymbols, setSelectedSymbols] = useState<typeof defaultSymbols>([]);
   const [inputValue, setInputValue] = useState<string>("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
   function handleSelect(symbols: typeof defaultSymbols) {
     setInputValue("");
@@ -19,17 +20,17 @@ export default function SymbolSelect() {
   }
 
   useEffect(() => {
+    const inputRefCopy = inputRef.current;
     function handleBackspace(e: KeyboardEvent) {
       if (selectedSymbols.length !== 0 && e.code === "Backspace" && inputValue === "") {
-        console.log("inside useEffect");
         setSelectedSymbols(selectedSymbols.slice(0, -1));
       }
     }
 
-    window.addEventListener("keydown", handleBackspace);
+    inputRef.current?.addEventListener("keydown", handleBackspace);
 
     return () => {
-      window.removeEventListener("keydown", handleBackspace);
+      inputRefCopy?.removeEventListener("keydown", handleBackspace);
     };
   }, [selectedSymbols, inputValue]);
 
@@ -57,6 +58,7 @@ export default function SymbolSelect() {
               </span>
             ))}
             <Combobox.Input
+              ref={inputRef}
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               size={4}
