@@ -2,7 +2,7 @@ package api_helpers
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"net/url"
@@ -37,7 +37,7 @@ func GetResponse(req *http.Request) []byte {
 	client := &http.Client{}
 
 	res, _ := client.Do(req)
-	data, err := ioutil.ReadAll(res.Body)
+	data, err := io.ReadAll(res.Body)
 
 	if err != nil {
 		log.Fatal(err)
@@ -58,4 +58,13 @@ func GetQueryString(rawUrl *url.URL, query string) (string, error) {
 func FormatDate(date time.Time) string {
 	y, m, d := date.Date()
 	return fmt.Sprintf("%d-%d-%d", y, m, d)
+}
+
+func ParseDate(date string) (time.Time, error) {
+	parsed, err := time.Parse("2006-01-02", date)
+	if err != nil {
+		return time.Time{}, err
+	}
+
+	return parsed, nil
 }

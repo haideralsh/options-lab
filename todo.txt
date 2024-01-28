@@ -1,0 +1,3 @@
+todo
+- Days to expiry range
+- Add greeks (delta and theta)

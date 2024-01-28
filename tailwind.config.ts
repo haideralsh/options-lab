@@ -1,10 +1,14 @@
-import type { Config } from 'tailwindcss'
+import type { Config } from "tailwindcss";
+import colors from "tailwindcss/colors";
 
 export default {
-  content: ['./app/**/*.{js,jsx,ts,tsx}'],
+  content: ["./app/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        gray: colors.slate,
+      },
+    },
   },
-  plugins: [],
-} satisfies Config
-
+  plugins: [require("@headlessui/tailwindcss")],
+} satisfies Config;
