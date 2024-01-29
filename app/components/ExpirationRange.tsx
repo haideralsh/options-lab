@@ -10,7 +10,7 @@ const options = [
   { value: "CUSTOM", label: "Custom" },
 ];
 
-export type ExpirationRange = "ANYTIME" | "CUSTOM" | number;
+export type ExpirationRangeOption = "ANYTIME" | "CUSTOM" | number;
 
 export default function ExpirationRange() {
   const [selected, setSelected] = useState(options[0]);
@@ -42,7 +42,7 @@ export default function ExpirationRange() {
         </div>
       </Listbox>
       {selected.value === "CUSTOM" && (
-        <label className="flex items-center gap-2 relative">
+        <label className="flex items-center relative">
           <input
             size={4}
             maxLength={4}

@@ -1,6 +1,7 @@
 import { Form } from "@remix-run/react";
 import SymbolSelect from "./SymbolSelect";
 import ExpirationRange from "./ExpirationRange";
+import PercentageRange from "./PercentageRange";
 
 export default function Sidebar() {
   return (
@@ -10,6 +11,7 @@ export default function Sidebar() {
       <Form className="flex flex-col justify-between flex-grow" method="post">
         <div className="flex flex-col gap-3">
           <SymbolSelect />
+          <PercentageRange />
           <ExpirationRange />
         </div>
 

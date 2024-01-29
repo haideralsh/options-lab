@@ -1,3 +1,4 @@
 todo
+- Add symbol price
 - Days to expiry range
 - Add greeks (delta and theta)

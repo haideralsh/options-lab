@@ -3,7 +3,7 @@ import type { MetaFunction, ActionFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useActionData } from "@remix-run/react";
 import { Fragment, useEffect, useState } from "react";
-import { ExpirationRange } from "~/components/ExpirationRange";
+import { ExpirationRangeOption } from "~/components/ExpirationRange";
 import Sidebar from "~/components/Sidebar";
 import { Column } from "~/components/TableColumn";
 
@@ -23,7 +23,7 @@ export const action: ActionFunction = async ({ request }) => {
 
   let expiresWithin;
 
-  switch (formData.get("expires-within[value]") as ExpirationRange) {
+  switch (formData.get("expires-within[value]") as ExpirationRangeOption) {
     case "ANYTIME":
       expiresWithin = undefined;
       break;
@@ -39,7 +39,7 @@ export const action: ActionFunction = async ({ request }) => {
   const requestBody = {
     symbols: symbols,
     expires_within_days: Number(expiresWithin),
-    percentage: 4,
+    percentage: Number(formData.get("percentage")),
   };
 
   let result;
