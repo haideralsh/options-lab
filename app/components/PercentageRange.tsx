@@ -33,7 +33,15 @@ export default function PercentageRange() {
             step={1}
             value={value[0]}
             type="number"
-            onChange={(e) => setValue([e.target.valueAsNumber])}
+            onChange={(e) => {
+              const percentage = e.target.valueAsNumber;
+
+              if (isNaN(percentage)) {
+                setValue([0]);
+              } else if (percentage >= 0 && percentage <= 100) {
+                setValue([percentage]);
+              }
+            }}
           />
           <span className="text-sm absolute text-gray-400 right-0 w-7">%</span>
         </label>
