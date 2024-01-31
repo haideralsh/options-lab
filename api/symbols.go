@@ -87,6 +87,10 @@ func normalizeResponse(res []byte) interface{} {
 	// More than one symbol matched query
 	symbols, ok := securities.(map[string]interface{})["security"].([]interface{})
 	if ok {
+		if len(symbols) >= 5 {
+			symbols = symbols[:5] // Take the first 5 elements
+		}
+
 		return SymbolsResponse{
 			Symbols: symbols,
 		}
