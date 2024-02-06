@@ -88,7 +88,8 @@ func normalizeResponse(res []byte) interface{} {
 	symbols, ok := securities.(map[string]interface{})["security"].([]interface{})
 	if ok {
 		if len(symbols) >= 5 {
-			symbols = symbols[:5] // Take the first 5 elements
+			// Take the first 5 elements as this list can get really long...
+			symbols = symbols[:5]
 		}
 
 		return SymbolsResponse{

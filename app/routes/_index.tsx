@@ -44,6 +44,8 @@ export const action: ActionFunction = async ({ request }) => {
 
   let result;
 
+  console.log(requestBody);
+
   await fetch("https://options-lab.vercel.app/api/options", {
     body: JSON.stringify(requestBody),
     method: "POST",
@@ -143,12 +145,12 @@ export default function Index() {
   }
 
   return (
-    <div className="grid grid-cols-[400px_1fr] relative">
+    <div className="grid grid-cols-[400px_1fr] relative bg-[repeating-linear-gradient(90deg, black, black 1px, white 1px, white 2px)]">
       <Sidebar />
       <div className="py-8 sm:px-6 lg:px-8">
         <div className="sm:flex sm:items-center">
           <div className="sm:flex-auto">
-            <h1 className="text-xl font-semibold text-gray-100">Option chains</h1>
+            {/* <h1 className="text-xl font-semibold text-gray-100">Option chains</h1> */}
             <p className="mt-2 text-sm text-gray-300">
               Showing {optionsCount} options for <span className="font-semibold">{formatter.format(symbols)}</span>. Use
               the filters to narrow down your search.
@@ -159,8 +161,8 @@ export default function Index() {
           <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
               <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-                <table className="relative tabular-nums min-w-full divide-y divide-gray-700">
-                  <thead className="bg-gray-800">
+                <table className="relative tabular-nums min-w-full divide-y divide-gray-800">
+                  <thead className="bg-gray-900">
                     <tr>
                       <Column>Expiration date</Column>
                       <Column>Ask</Column>
@@ -168,14 +170,14 @@ export default function Index() {
                       <Column className="text-right">Percentage</Column>
                     </tr>
                   </thead>
-                  <tbody className="bg-gray-800 divide-y divide-gray-700">
+                  <tbody className="bg-gray-900 divide-y divide-gray-700">
                     {Object.entries(data).map(([symbol, options]) => {
                       return (
                         <Fragment key={symbol}>
                           <th
                             colSpan={4}
                             scope="colgroup"
-                            className="sticky top-0 cursor-pointer bg-gray-700 m-1 text-gray-300 text-left py-2 pl-4 pr-3 text-sm font-medium whitespace-nowrap sm:pl-6"
+                            className="sticky top-0 cursor-pointer bg-gray-800 m-1 text-gray-300 text-left py-2 pl-4 pr-3 text-sm font-medium whitespace-nowrap sm:pl-6"
                             onClick={() => toggleGroup(symbol)}
                           >
                             <div className="flex gap-1 items-center">

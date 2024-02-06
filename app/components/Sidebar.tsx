@@ -5,7 +5,7 @@ import PercentageRange from "./PercentageRange";
 
 export default function Sidebar() {
   return (
-    <div className="flex flex-col gap-3 pt-8 px-4 pb-4 bg-gray-800 h-screen sticky top-0">
+    <div className="flex flex-col gap-3 pt-8 px-4 pb-4 bg-gray-900 h-screen sticky top-0">
       <h1 className="text-xl font-semibold text-gray-100">Options Lab</h1>
 
       <Form className="flex flex-col justify-between flex-grow" method="post">
