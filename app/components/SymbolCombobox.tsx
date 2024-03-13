@@ -4,7 +4,7 @@ import { useFetcher } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
 import { SearchResponse } from "~/routes/search";
 
-export default function SymbolSelect() {
+export default function SymbolCombobox() {
   const [selectedSymbols, setSelectedSymbols] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -41,7 +41,7 @@ export default function SymbolSelect() {
   }, [selectedSymbols, inputValue]);
 
   return (
-    <Combobox name="symbols" value={selectedSymbols} onChange={handleSelect} multiple>
+    <Combobox className="relative" as="div" name="symbols" value={selectedSymbols} onChange={handleSelect} multiple>
       <Combobox.Label className="text-xs text-gray-200 font-medium">Symbols</Combobox.Label>
       <div
         onKeyDown={() => {
@@ -72,7 +72,8 @@ export default function SymbolSelect() {
               </button>
             </span>
           ))}
-          <search.Form className="inline flex-grow" method="get" action="/search">
+          <search.Form
+              className="inline flex-grow" method="get" action="/search">
             <Combobox.Input
               placeholder={selectedSymbols.length ? undefined : "Enter a symbol..."}
               ref={inputRef}
@@ -99,17 +100,20 @@ export default function SymbolSelect() {
           )}
         </span>
       </div>
-      <Combobox.Options className="bg-gray-700 overflow-hidden rounded-md ui-open:rounded-t-none">
+      <Combobox.Options className="absolute w-full top-[100%] z-10 bg-gray-700 overflow-hidden rounded-md ui-open:rounded-t-none">
         {search.data?.symbols &&
           search.data?.symbols
             .filter((symbolDetails) => !selectedSymbols.includes(symbolDetails.symbol))
             .map((symbolDetails) => (
               <Combobox.Option
-                className="ui-active:bg-gray-600 over:bg-gray-600 text-sm p-3 cursor-default"
+                className="ui-active:bg-gray-600 ui-active:text-white over:bg-gray-600 text-sm p-3 cursor-default"
                 key={symbolDetails.symbol}
                 value={symbolDetails.symbol}
               >
-                {symbolDetails.symbol}
+                <div className="flex flex-col">
+                  <span>{symbolDetails.symbol}</span>
+                  <span className="text-xs line-clamp-1">{symbolDetails.description}</span>
+                </div>
               </Combobox.Option>
             ))}
       </Combobox.Options>

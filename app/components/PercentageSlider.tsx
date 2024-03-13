@@ -1,7 +1,7 @@
 import * as Slider from "@radix-ui/react-slider";
 import { useState } from "react";
 
-export default function PercentageRange() {
+export default function PercentageSlider() {
   const [value, setValue] = useState<number[]>([12]);
 
   return (
@@ -13,15 +13,15 @@ export default function PercentageRange() {
         <div className="relative w-full flex-grow">
           <Slider.Root
             name="percentage"
-            className="relative flex items-center select-none touch-none h-5  overflow-hidden"
+            className="relative flex items-center select-none touch-none h-5 rounded overflow-hidden"
             value={value}
             onValueChange={(value: number[]) => setValue(value)}
             max={100}
             step={1}
             minStepsBetweenThumbs={1}
           >
-            <Slider.Track className="relative grow h-[9px] slider">
-              <Slider.Range className="absolute bg-gray-200 h-full" />
+            <Slider.Track className="relative grow h-[9px] slider rounded-full overflow-hidden">
+              <Slider.Range className="absolute bg-gray-200 h-full rounded-l" />
             </Slider.Track>
             <Slider.Thumb aria-label="Volume" />
           </Slider.Root>

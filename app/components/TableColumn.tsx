@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-export function Column({ children, className }: { children: ReactNode; className?: string }) {
+export default function Column({ children, className }: { children: ReactNode; className?: string }) {
   return (
     <th
       scope="col"

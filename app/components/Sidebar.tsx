@@ -1,7 +1,7 @@
 import { Form } from "@remix-run/react";
-import SymbolSelect from "./SymbolSelect";
-import ExpirationRange from "./ExpirationRange";
-import PercentageRange from "./PercentageRange";
+import SymbolSelect from "./SymbolCombobox";
+import ExpirationRange from "./ExpirationSelect";
+import PercentageRange from "./PercentageSlider";
 
 export default function Sidebar() {
   return (

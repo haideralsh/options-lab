@@ -3,7 +3,7 @@ import { Listbox } from "@headlessui/react";
 import { ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import { CheckIcon } from "@heroicons/react/16/solid";
 
-const options: { value: ExpirationRangeOption; label: string }[] = [
+const options: { value: ExpirationSelectOption; label: string }[] = [
   { value: "ANYTIME", label: "Anytime" },
   { value: 7, label: "7 days" },
   { value: 30, label: "30 days" },
@@ -11,9 +11,9 @@ const options: { value: ExpirationRangeOption; label: string }[] = [
   { value: "CUSTOM", label: "Custom" },
 ];
 
-export type ExpirationRangeOption = "ANYTIME" | "CUSTOM" | number;
+export type ExpirationSelectOption = "ANYTIME" | "CUSTOM" | number;
 
-export default function ExpirationRange() {
+export default function ExpirationSelect() {
   const [selected, setSelected] = useState(options[0]);
 
   return (

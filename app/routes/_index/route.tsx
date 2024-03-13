@@ -3,9 +3,10 @@ import type { MetaFunction, ActionFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useActionData } from "@remix-run/react";
 import { Fragment, useEffect, useState } from "react";
-import { ExpirationRangeOption } from "~/components/ExpirationRange";
+import { type ExpirationSelectOption } from "~/components/ExpirationSelect";
 import Sidebar from "~/components/Sidebar";
-import { Column } from "~/components/TableColumn";
+import TableColumn from "~/components/TableColumn";
+import {formatter, Options} from "./lib";
 
 export const meta: MetaFunction = () => {
   return [{ title: "Options Lab" }, { name: "description", content: "Options Lab - explore option chains" }];
@@ -23,7 +24,7 @@ export const action: ActionFunction = async ({ request }) => {
 
   let expiresWithin;
 
-  switch (formData.get("expires-within[value]") as ExpirationRangeOption) {
+  switch (formData.get("expires-within[value]") as ExpirationSelectOption) {
     case "ANYTIME":
       expiresWithin = undefined;
       break;
@@ -59,57 +60,6 @@ export const action: ActionFunction = async ({ request }) => {
     });
 
   return json(result);
-};
-
-const formatter = new Intl.ListFormat("en", {
-  style: "long",
-  type: "conjunction",
-});
-
-type OptionSymbol = string;
-type ExpirationDate = string;
-type OptionChain = {
-  ask: number;
-  ask_date: number;
-  askexch: string;
-  asksize: number;
-  average_volume: number;
-  bid: number;
-  bid_date: number;
-  bidexch: string;
-  bidsize: number;
-  change: number;
-  change_percentage: number;
-  close: number;
-  contract_size: number;
-  description: string;
-  exch: string;
-  expiration_date: string;
-  expiration_type: string;
-  high: number;
-  last: number;
-  last_volume: number;
-  low: number;
-  open: number;
-  open_interest: number;
-  option_type: string;
-  percentage: number;
-  prevclose: number;
-  root_symbol: string;
-  strike: number;
-  symbol: string;
-  trade_date: number;
-  type: string;
-  underlying: string;
-  volume: number;
-  week_52_high: number;
-  week_52_low: number;
-};
-
-type Options = {
-  [key: OptionSymbol]: {
-    [key: ExpirationDate]: OptionChain[];
-  };
 };
 
 export default function Index() {
@@ -164,10 +114,10 @@ export default function Index() {
                 <table className="relative tabular-nums min-w-full divide-y divide-gray-800">
                   <thead className="bg-gray-900">
                     <tr>
-                      <Column>Expiration date</Column>
-                      <Column>Ask</Column>
-                      <Column>Bid</Column>
-                      <Column className="text-right">Percentage</Column>
+                      <TableColumn>Expiration date</TableColumn>
+                      <TableColumn>Ask</TableColumn>
+                      <TableColumn>Bid</TableColumn>
+                      <TableColumn className="text-right">Percentage</TableColumn>
                     </tr>
                   </thead>
                   <tbody className="bg-gray-900 divide-y divide-gray-700">
