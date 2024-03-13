@@ -1,38 +1,15 @@
-# Welcome to Remix!
+# Options Lab
+An app to explore and search through option chains. 
 
-- [Remix Docs](https://remix.run/docs)
+> This app is still in early development. Expect occasional bugs and missing features.
 
-## Development
+ #### Todo
+- [ ] Add symbol price
+- [ ] Days to expiry range
+- [ ] Add greeks (delta and theta)
+- [ ] Add exchange info in the symbols combobox results list
+- [ ] Add security type in the symbols combobox results list
 
-From your terminal:
-
-```sh
-npm run dev
-```
-
-This starts your app in development mode, rebuilding assets on file changes.
-
-## Deployment
-
-First, build your app for production:
-
-```sh
-npm run build
-```
-
-Then run the app in production mode:
-
-```sh
-npm start
-```
-
-Now you'll need to pick a host to deploy it to.
-
-### DIY
-
-If you're familiar with deploying node applications, the built-in Remix app server is production-ready.
-
-Make sure to deploy the output of `remix build`
-
-- `build/`
-- `public/build/`
+#### Known bugs
+- [ ] When typing, pressing "Enter" in the search field submits the symbol search form, not the filters one.
+- [ ] Typing "Enter" in the percentage box clears it (unknown reason).
