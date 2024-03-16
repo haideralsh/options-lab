@@ -110,9 +110,15 @@ export default function SymbolCombobox() {
                 key={symbolDetails.symbol}
                 value={symbolDetails.symbol}
               >
-                <div className="flex flex-col">
+                <div className="flex">
+                <div className="flex flex-col grow">
                   <span>{symbolDetails.symbol}</span>
                   <span className="text-xs line-clamp-1">{symbolDetails.description}</span>
+                </div>
+                  <div className="text-xs uppercase font-medium text-gray-700 rounded-sm border self-center">
+                    <span className="bg-gray-300  text-gray-700 p-0.5 px-1">{symbolDetails.exchange}</span>
+                    <span className="text-gray-300 p-0.5 px-1">{symbolDetails.type}</span>
+                  </div>
                 </div>
               </Combobox.Option>
             ))}
