@@ -6,7 +6,7 @@ import { Fragment, useEffect, useState } from "react";
 import { type ExpirationSelectOption } from "~/components/ExpirationSelect";
 import Sidebar from "~/components/Sidebar";
 import TableColumn from "~/components/TableColumn";
-import {formatter, Options} from "./lib";
+import { formatter, Options } from "./lib";
 
 export const meta: MetaFunction = () => {
   return [{ title: "Options Lab" }, { name: "description", content: "Options Lab - explore option chains" }];
@@ -43,23 +43,20 @@ export const action: ActionFunction = async ({ request }) => {
     percentage: Number(formData.get("percentage")),
   };
 
-  let result;
+  // let result;
 
   console.log(requestBody);
 
-  await fetch("https://options-lab.vercel.app/api/options", {
+  const result = await fetch("https://options-lab.vercel.app/api/options", {
     body: JSON.stringify(requestBody),
     method: "POST",
-  })
-    .then((res) => res.json())
-    .then((jsonResponse) => {
-      result = jsonResponse;
-    })
-    .catch(() => {
-      result = { error: "There was an error" };
-    });
+  });
 
-  return json(result);
+  if (result.ok) {
+    return json(await result.json());
+  }
+
+  return json({ error: "There was an error" });
 };
 
 export default function Index() {
