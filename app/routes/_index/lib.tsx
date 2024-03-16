@@ -4,7 +4,9 @@ export const formatter = new Intl.ListFormat("en", {
 });
 
 type OptionSymbol = string;
+
 type ExpirationDate = string;
+
 export type OptionChain = {
   ask: number;
   ask_date: number;
@@ -23,6 +25,19 @@ export type OptionChain = {
   exch: string;
   expiration_date: string;
   expiration_type: string;
+  greeks: {
+    ask_iv: number;
+    bid_iv: number;
+    delta: number;
+    gamma: number;
+    mid_iv: number;
+    phi: number;
+    rho: number;
+    smv_vol: number;
+    theta: number;
+    updated_at: string;
+    vega: number;
+  };
   high: number;
   last: number;
   last_volume: number;

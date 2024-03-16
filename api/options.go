@@ -113,7 +113,7 @@ func getOptions(symbol, expiration string) <-chan []interface{} {
 	go func() {
 		defer close(r)
 
-		endpoint := fmt.Sprintf("%s/options/chains?symbol=%s&expiration=%s&greeks=false", oc.BaseUrl, symbol, expiration)
+		endpoint := fmt.Sprintf("%s/options/chains?symbol=%s&expiration=%s&greeks=true", oc.BaseUrl, symbol, expiration)
 		req := oc.BuildRequest(endpoint, oc.Token)
 		res := oc.GetResponse(req)
 
@@ -167,7 +167,7 @@ func getQuote(symbol string) <-chan float64 {
 	go func() {
 		defer close(r)
 
-		endpoint := fmt.Sprintf("%s/quotes?symbols=%s&greeks=false", oc.BaseUrl, symbol)
+		endpoint := fmt.Sprintf("%s/quotes?symbols=%s&greeks=true", oc.BaseUrl, symbol)
 		req := oc.BuildRequest(endpoint, oc.Token)
 		res := oc.GetResponse(req)
 

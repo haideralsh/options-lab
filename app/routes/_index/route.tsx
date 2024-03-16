@@ -114,7 +114,9 @@ export default function Index() {
                       <TableColumn>Expiration date</TableColumn>
                       <TableColumn>Ask</TableColumn>
                       <TableColumn>Bid</TableColumn>
-                      <TableColumn className="text-right">Percentage</TableColumn>
+                      <TableColumn>δ</TableColumn>
+                      <TableColumn>θ</TableColumn>
+                      <TableColumn className="text-right">%</TableColumn>
                     </tr>
                   </thead>
                   <tbody className="bg-gray-900 divide-y divide-gray-700">
@@ -152,6 +154,12 @@ export default function Index() {
                                   )}
                                   <td className="px-3 py-4 text-sm text-gray-300 whitespace-nowrap">{option.ask}</td>
                                   <td className="px-3 py-4 text-sm text-gray-300 whitespace-nowrap">{option.bid}</td>
+                                  <td className="px-3 py-4 text-sm text-gray-300 whitespace-nowrap">
+                                    {option.greeks.delta}
+                                  </td>
+                                  <td className="px-3 py-4 text-sm text-gray-300 whitespace-nowrap">
+                                    {option.greeks.theta}
+                                  </td>
                                   <td className="px-3 py-4 pr-8 text-sm text-gray-300 whitespace-nowrap text-right">
                                     {option.percentage.toFixed(2)}%
                                   </td>
